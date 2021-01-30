@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <title>Cat or James Franco</title>
+  </head>
+  <body>
+    <div class="container">
+        <h1>Cat or James Franco?</h1>
+        <p>
+          <img id="image" class="rounded img-fluid" alt="img">
+        </p>
+        <p>
+          <div id="correct" class="alert alert-success" role="alert">
+            You are correct
+          </div>
+          <div id="wrong" class="alert alert-danger" role="alert">
+            You are wrong
+          </div>
+        </p>
+        <p>
+          <button type="button" class="btn btn-primary btn-lg" id="next">Next</button>
+          <button type="button" class="btn btn-primary btn-lg" id="cat">Cat</button>
+          <button type="button" class="btn btn-secondary btn-lg" id="franco">James Franco</button>
+        </p>
+        <p id="results" class="alert alert-primary" role="alert">
+
+        </p>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+      const questions = [
+        {
+          src: 'https://cdn.images.express.co.uk/img/dynamic/11/590x/KKSS-699265.jpg',
+          isCat: true
+        },
+        {
+          src: 'https://lh3.googleusercontent.com/proxy/VNZP9RXjjxtsdJSQ2vAlXx_x59qVu-BCbumM-h3sQdDZFymAh5XgrfPZ9x6pZByzl3kBENZ4YO_BNkom0kSxJt_o_uvi4pneZHU3uLvf93RPtSq9mBO3iOvaMgmmsK8wJlWr2QGjqxFB8J_jA4E6RVnArkS8YthNTwyi',
+          isCat: false
+        },
+        {
+          src: 'https://laistassets.scprdev.org/i/f8e3cdbccd05bf0a26c190b9180e2b78/5b2c40784488b3000927620e-thumb-640.jpg',
+          isCat: false
+        },
+        {
+          src: 'https://k4h3w8q3.rocketcdn.me/wp-content/uploads/2020/12/cat-close-eye-header.jpg',
+          isCat: true
+        },
+        {
+          src: 'https://imagesvc.meredithcorp.io/v3/mm/image?q=85&c=sc&poi=%5B1340%2C733%5D&w=2000&h=1000&url=https%3A%2F%2Fstatic.onecms.io%2Fwp-content%2Fuploads%2Fsites%2F47%2F2020%2F07%2F25%2Fkitten-weeping-eye-900614774-2000.jpg',
+          isCat: true
+        }
+      ];
+
+      let correct = 0;
+      function showCorrect(i) {
+        i++;
+        return function () {
+          correct++;
+          $('#correct').show();
+          $('#next').show();
+          $('#cat').hide();
+          $('#franco').hide();
+          $('#next').click(() => {
+            displayQuestion(i);
+          });
+        }
+      }
+
+      function showWrong(i) {
+        i++;
+        return function () {
+          $('#wrong').show();
+          $('#next').show();
+          $('#cat').hide();
+          $('#franco').hide();
+          $('#next').click(() => {
+            displayQuestion(i);
+          });
+        }
+      }
+
+      function displayQuestion(i) {
+        $('#correct').hide();
+        $('#wrong').hide();
+        $('#next').hide();
+        $('#cat').show().off('click');
+        $('#franco').show().off('click');
+
+        var q = questions[i];
+        if (!q) {
+          showResults();
+        }
+        $('#image').attr('src', q.src);
+        if (q.isCat) {
+          $('#cat').click(showCorrect(i));
+          $('#franco').click(showWrong(i));
+        } else {
+          $('#cat').click(showWrong(i));
+          $('#franco').click(showCorrect(i));
+        }
+      }
+
+      function showResults() {
+        $('#correct').hide();
+        $('#wrong').hide();
+        $('#next').hide();
+        $('#image').hide();
+        $('#cat').hide();
+        $('#franco').hide();
+
+        $('#results').text(`Congratulations, you got ${correct} questions correct out of ${questions.length}`).show();
+      }
+
+      $(document).ready(() => {
+        $('#results').hide();
+        displayQuestion(0);
+      });
+    </script>
+  </body>
+</html>
